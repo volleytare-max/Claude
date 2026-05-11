@@ -65,7 +65,7 @@ body {
   border: 1px solid #2a2a5a;
 }
 
-.controls p {
+.panel-section p {
   font-size: 11px;
   color: #aaaacc;
   margin: 2px 0;
@@ -95,6 +95,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 
 #overlay.hidden {
@@ -136,4 +137,133 @@ body {
 
 #overlay-btn:hover {
   background: #6666cc;
+}
+
+/* Touch controls: hidden on desktop */
+#touch-controls {
+  display: none;
+}
+
+/* ── Mobile ── */
+@media (max-width: 599px) {
+  body {
+    align-items: flex-start;
+    overflow: hidden;
+  }
+
+  #app {
+    width: 100vw;
+    height: 100dvh;
+    height: 100vh; /* fallback */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #game-container {
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+    flex: 1;
+    min-height: 0;
+  }
+
+  #side-panel {
+    width: 100%;
+    flex-direction: row;
+    gap: 4px;
+    padding: 4px 6px;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+
+  .panel-section {
+    padding: 4px 6px;
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .panel-section h3 {
+    font-size: 9px;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
+  }
+
+  #score, #level, #lines {
+    font-size: 15px;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  #start-btn {
+    font-size: 11px;
+    padding: 6px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #board {
+    flex-shrink: 0;
+  }
+
+  /* Touch controls */
+  #touch-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .ctrl-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .ctrl-btn {
+    flex: 1;
+    height: 54px;
+    font-size: 22px;
+    background: #1e1e4e;
+    color: #fff;
+    border: 1px solid #4a4a8a;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    transition: background 0.1s;
+  }
+
+  .ctrl-btn:active {
+    background: #4a4acc;
+  }
+
+  .ctrl-btn.wide {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  .ctrl-btn.narrow {
+    flex: 0 0 54px;
+    font-size: 18px;
+  }
+
+  #overlay-content {
+    padding: 24px 28px;
+    margin: 16px;
+  }
+
+  #overlay-title {
+    font-size: 22px;
+  }
+
+  #overlay-score {
+    font-size: 15px;
+  }
 }

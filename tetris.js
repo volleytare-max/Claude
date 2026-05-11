@@ -1,7 +1,8 @@
 const COLS = 10;
 const ROWS = 20;
-const BLOCK = 30;
-const NEXT_BLOCK = 24;
+
+let BLOCK = 30;
+let NEXT_BLOCK = 24;
 
 const COLORS = {
   I: '#00cfcf',
@@ -24,7 +25,6 @@ const SHAPES = {
 };
 
 const PIECE_TYPES = Object.keys(SHAPES);
-
 const SCORE_TABLE = [0, 100, 300, 500, 800];
 const LEVEL_INTERVAL = 10;
 
@@ -40,8 +40,44 @@ const overlay = document.getElementById('overlay');
 const overlayTitle = document.getElementById('overlay-title');
 const overlayScore = document.getElementById('overlay-score');
 const overlayBtn = document.getElementById('overlay-btn');
+const touchControls = document.getElementById('touch-controls');
 
 let board, current, next, score, level, lines, dropInterval, lastTime, rafId, paused, gameOver;
+
+// ── Sizing ──────────────────────────────────────────────
+
+function isMobile() {
+  return window.innerWidth < 600;
+}
+
+function updateSizes() {
+  if (isMobile()) {
+    const sideH = document.getElementById('side-panel').offsetHeight || 56;
+    const ctrlH = touchControls.offsetHeight || 126;
+    const padding = 12;
+    const availW = window.innerWidth - 4;
+    const availH = window.innerHeight - sideH - ctrlH - padding;
+    const byW = Math.floor(availW / COLS);
+    const byH = Math.floor(availH / ROWS);
+    BLOCK = Math.max(14, Math.min(byW, byH, 32));
+    NEXT_BLOCK = Math.max(10, Math.floor(BLOCK * 0.45));
+  } else {
+    BLOCK = 30;
+    NEXT_BLOCK = 24;
+  }
+  boardCanvas.width = COLS * BLOCK;
+  boardCanvas.height = ROWS * BLOCK;
+  nextCanvas.width = 5 * NEXT_BLOCK;
+  nextCanvas.height = 5 * NEXT_BLOCK;
+}
+
+window.addEventListener('resize', () => {
+  updateSizes();
+  drawBoard();
+  drawNext();
+});
+
+// ── Game logic ───────────────────────────────────────────
 
 function createBoard() {
   return Array.from({ length: ROWS }, () => Array(COLS).fill(null));
@@ -126,7 +162,38 @@ function ghostY() {
   return current.y + dy;
 }
 
-function drawBlock(ctx, x, y, color, size = BLOCK) {
+function doRotate() {
+  const rotated = rotate(current.shape);
+  const kicks = [0, -1, 1, -2, 2];
+  for (const kick of kicks) {
+    if (isValid({ ...current, x: current.x + kick }, 0, 0, rotated)) {
+      current.shape = rotated;
+      current.x += kick;
+      break;
+    }
+  }
+}
+
+function hardDrop() {
+  const dy = ghostY() - current.y;
+  current.y = ghostY();
+  score += dy * 2;
+  scoreEl.textContent = score;
+  lock(current);
+}
+
+function softDrop() {
+  if (isValid(current, 0, 1)) {
+    current.y++;
+    score++;
+    scoreEl.textContent = score;
+  }
+}
+
+// ── Drawing ──────────────────────────────────────────────
+
+function drawBlock(ctx, x, y, color, size) {
+  size = size || BLOCK;
   ctx.fillStyle = color;
   ctx.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
   ctx.fillStyle = 'rgba(255,255,255,0.2)';
@@ -184,7 +251,9 @@ function drawNext() {
   }
 }
 
-function drop(time) {
+// ── Game loop ────────────────────────────────────────────
+
+function loop(time) {
   if (paused || gameOver) return;
   const delta = time - lastTime;
   if (delta > dropInterval) {
@@ -197,7 +266,7 @@ function drop(time) {
   }
   drawBoard();
   drawNext();
-  rafId = requestAnimationFrame(drop);
+  rafId = requestAnimationFrame(loop);
 }
 
 function startGame() {
@@ -216,7 +285,7 @@ function startGame() {
   overlay.classList.add('hidden');
   cancelAnimationFrame(rafId);
   lastTime = performance.now();
-  rafId = requestAnimationFrame(drop);
+  rafId = requestAnimationFrame(loop);
   startBtn.textContent = '再スタート';
 }
 
@@ -228,54 +297,117 @@ function endGame() {
   overlay.classList.remove('hidden');
 }
 
-function hardDrop() {
-  const dy = ghostY() - current.y;
-  current.y = ghostY();
-  score += dy * 2;
-  scoreEl.textContent = score;
-  lock(current);
+function togglePause() {
+  if (gameOver) return;
+  paused = !paused;
+  if (!paused) {
+    lastTime = performance.now();
+    rafId = requestAnimationFrame(loop);
+  }
 }
+
+// ── Keyboard ─────────────────────────────────────────────
 
 document.addEventListener('keydown', e => {
   if (!current || gameOver) return;
   switch (e.key) {
-    case 'ArrowLeft':
-      if (isValid(current, -1, 0)) current.x--;
-      break;
-    case 'ArrowRight':
-      if (isValid(current, 1, 0)) current.x++;
-      break;
-    case 'ArrowDown':
-      if (isValid(current, 0, 1)) { current.y++; score++; scoreEl.textContent = score; }
-      break;
-    case 'ArrowUp': {
-      const rotated = rotate(current.shape);
-      const kicks = [0, -1, 1, -2, 2];
-      for (const kick of kicks) {
-        if (isValid({ ...current, x: current.x + kick }, 0, 0, rotated)) {
-          current.shape = rotated;
-          current.x += kick;
-          break;
-        }
-      }
-      break;
-    }
-    case ' ':
-      e.preventDefault();
-      hardDrop();
-      break;
-    case 'p':
-    case 'P':
-      if (!gameOver) {
-        paused = !paused;
-        if (!paused) { lastTime = performance.now(); rafId = requestAnimationFrame(drop); }
-      }
-      break;
+    case 'ArrowLeft':  if (isValid(current, -1, 0)) current.x--; break;
+    case 'ArrowRight': if (isValid(current,  1, 0)) current.x++; break;
+    case 'ArrowDown':  softDrop(); break;
+    case 'ArrowUp':    doRotate(); break;
+    case ' ':          e.preventDefault(); hardDrop(); break;
+    case 'p': case 'P': togglePause(); break;
   }
 });
+
+// ── Touch buttons ────────────────────────────────────────
+
+function holdBtn(id, action) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  let iv = null;
+  const start = e => {
+    e.preventDefault();
+    if (!current || gameOver || paused) return;
+    action();
+    iv = setInterval(() => {
+      if (!current || gameOver || paused) { clearInterval(iv); return; }
+      action();
+    }, 110);
+  };
+  const stop = () => clearInterval(iv);
+  btn.addEventListener('touchstart', start, { passive: false });
+  btn.addEventListener('touchend',   stop,  { passive: false });
+  btn.addEventListener('touchcancel',stop,  { passive: false });
+  btn.addEventListener('mousedown',  start);
+  btn.addEventListener('mouseup',    stop);
+  btn.addEventListener('mouseleave', stop);
+}
+
+function tapBtn(id, action) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (!current || gameOver || paused) return;
+    action();
+  }, { passive: false });
+  btn.addEventListener('click', () => {
+    if (!current || gameOver || paused) return;
+    action();
+  });
+}
+
+holdBtn('btn-left',  () => { if (isValid(current, -1, 0)) current.x--; });
+holdBtn('btn-right', () => { if (isValid(current,  1, 0)) current.x++; });
+holdBtn('btn-down',  softDrop);
+tapBtn('btn-rotate', doRotate);
+tapBtn('btn-hard',   hardDrop);
+
+const pauseBtn = document.getElementById('btn-pause');
+if (pauseBtn) {
+  pauseBtn.addEventListener('touchstart', e => { e.preventDefault(); togglePause(); }, { passive: false });
+  pauseBtn.addEventListener('click', togglePause);
+}
+
+// ── Swipe on canvas ──────────────────────────────────────
+
+let swipeX = 0, swipeY = 0, swipeT = 0;
+
+boardCanvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  const t = e.changedTouches[0];
+  swipeX = t.clientX;
+  swipeY = t.clientY;
+  swipeT = Date.now();
+}, { passive: false });
+
+boardCanvas.addEventListener('touchend', e => {
+  e.preventDefault();
+  if (!current || gameOver || paused) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - swipeX;
+  const dy = t.clientY - swipeY;
+  const dt = Date.now() - swipeT;
+  const absDx = Math.abs(dx);
+  const absDy = Math.abs(dy);
+
+  if (absDx < 12 && absDy < 12 && dt < 250) {
+    doRotate();
+  } else if (absDx > absDy && absDx > 20) {
+    if (dx < 0) { if (isValid(current, -1, 0)) current.x--; }
+    else        { if (isValid(current,  1, 0)) current.x++; }
+  } else if (dy > 30) {
+    if (dy / dt > 0.4 || dy > 120) hardDrop();
+    else softDrop();
+  }
+}, { passive: false });
+
+// ── Init ─────────────────────────────────────────────────
 
 startBtn.addEventListener('click', startGame);
 overlayBtn.addEventListener('click', startGame);
 
+updateSizes();
 drawBoard();
 drawNext();
