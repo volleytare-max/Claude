@@ -1,0 +1,2101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スゴイサウナ — 富士山で、治まる。</title>
+  <meta name="description" content="日本初のパブリック型マグマスパ式サウナ。富士山の溶岩が生む黄金比65°C×60%×60°C。「ととのう」を超えた、本当の「治まる」体験へ。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ===================== RESET & BASE ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:       #050608;
+      --dark:        #0c0d10;
+      --dark2:       #111318;
+      --dark3:       #181b22;
+      --coal:        #252830;
+      --ash:         #3a3e4a;
+      --mist:        #6b7280;
+      --fog:         #9ca3af;
+      --white:       #f4f5f7;
+      --pure:        #ffffff;
+
+      --lava:        #e85d2a;
+      --lava-light:  #f5793a;
+      --ember:       #c4421a;
+      --amber:       #f59e0b;
+      --gold:        #d4af37;
+      --gold-light:  #f0d060;
+
+      --ice:         #a8d8ea;
+      --aqua:        #4db8d4;
+      --aqua-deep:   #1e90b0;
+      --teal:        #0f7173;
+
+      --grad-fire:   linear-gradient(135deg, #e85d2a 0%, #f59e0b 100%);
+      --grad-ice:    linear-gradient(135deg, #0f7173 0%, #4db8d4 100%);
+      --grad-dark:   linear-gradient(180deg, #050608 0%, #0c0d10 100%);
+      --grad-hero:   linear-gradient(160deg, #050608 0%, #1a0a04 50%, #050608 100%);
+
+      --radius-sm:   8px;
+      --radius-md:   16px;
+      --radius-lg:   24px;
+      --radius-xl:   40px;
+
+      --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans JP', 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===================== NOISE TEXTURE ===================== */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.35;
+    }
+
+    /* ===================== TYPOGRAPHY ===================== */
+    .serif { font-family: 'Noto Serif JP', serif; }
+    .en    { font-family: 'Inter', sans-serif; }
+
+    h1, h2, h3 { font-family: 'Noto Serif JP', serif; line-height: 1.15; }
+
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lava);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .label-ice { color: var(--aqua); }
+
+    /* ===================== NAV ===================== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 900;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      transition: background 0.4s var(--ease-out), backdrop-filter 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(5,6,8,0.85);
+      backdrop-filter: blur(20px) saturate(1.5);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .nav-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      color: var(--pure);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .nav-logo span {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--grad-fire);
+      box-shadow: 0 0 12px var(--lava);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 12px var(--lava); }
+      50% { transform: scale(1.3); box-shadow: 0 0 24px var(--lava), 0 0 40px rgba(232,93,42,0.4); }
+    }
+
+    .nav-links {
+      display: flex; gap: 32px; list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--fog);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.25s;
+    }
+
+    .nav-links a:hover { color: var(--pure); }
+
+    .nav-cta {
+      background: var(--grad-fire);
+      color: var(--pure) !important;
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-weight: 700 !important;
+      letter-spacing: 0.05em;
+      box-shadow: 0 4px 20px rgba(232,93,42,0.35);
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(232,93,42,0.5) !important;
+      color: var(--pure) !important;
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+
+    .nav-hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white); border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* ===================== HERO ===================== */
+    #hero {
+      min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 120px 24px 80px;
+      text-align: center;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: var(--grad-hero);
+    }
+
+    /* Lava glow orbs */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: drift 12s ease-in-out infinite;
+    }
+
+    .hero-orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(232,93,42,0.25) 0%, transparent 70%);
+      top: -100px; left: -100px;
+      animation-delay: 0s;
+    }
+
+    .hero-orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%);
+      bottom: -50px; right: -50px;
+      animation-delay: -5s;
+    }
+
+    .hero-orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(77,184,212,0.1) 0%, transparent 70%);
+      top: 40%; left: 60%;
+      animation-delay: -8s;
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -30px) scale(1.05); }
+      66% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* Grid lines */
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(232,93,42,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,93,42,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--lava-light);
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 28px;
+      padding: 8px 20px;
+      border: 1px solid rgba(232,93,42,0.3);
+      border-radius: 100px;
+      background: rgba(232,93,42,0.06);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--lava);
+      box-shadow: 0 0 8px var(--lava);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    h1.hero-title {
+      font-size: clamp(52px, 9vw, 120px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      color: var(--pure);
+    }
+
+    .hero-title .fire-text {
+      background: var(--grad-fire);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      filter: drop-shadow(0 0 40px rgba(232,93,42,0.4));
+    }
+
+    .hero-kanji {
+      font-size: clamp(14px, 2.5vw, 22px);
+      color: var(--fog);
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      margin-bottom: 40px;
+    }
+
+    .hero-stats {
+      display: flex; justify-content: center; gap: 40px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-num {
+      font-family: 'Inter', sans-serif;
+      font-size: 36px; font-weight: 900;
+      letter-spacing: -0.03em;
+      background: var(--grad-fire);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+
+    .hero-stat-label {
+      font-size: 11px; color: var(--fog);
+      letter-spacing: 0.1em;
+      margin-top: 4px;
+    }
+
+    .hero-divider {
+      width: 1px; background: rgba(255,255,255,0.1);
+      height: 40px; align-self: center;
+    }
+
+    .hero-actions {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 36px;
+      background: var(--grad-fire);
+      color: var(--pure);
+      font-weight: 700; font-size: 15px;
+      letter-spacing: 0.05em;
+      border-radius: 100px;
+      text-decoration: none;
+      border: none; cursor: pointer;
+      box-shadow: 0 8px 32px rgba(232,93,42,0.4), 0 2px 8px rgba(0,0,0,0.3);
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+      position: relative; overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(232,93,42,0.55), 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    .btn-primary:hover::before { opacity: 1; }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 36px;
+      color: var(--white);
+      font-weight: 500; font-size: 15px;
+      letter-spacing: 0.05em;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--ash); font-size: 11px; letter-spacing: 0.15em;
+      text-transform: uppercase; font-family: 'Inter', sans-serif;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .hero-scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(180deg, transparent, var(--lava), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+      50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-8px); }
+    }
+
+    /* ===================== SECTION BASE ===================== */
+    section {
+      position: relative;
+      padding: 120px 24px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .section-header .label { margin-bottom: 16px; display: block; }
+
+    .section-title {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--pure);
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--fog);
+      margin-top: 20px;
+      font-weight: 300;
+      line-height: 1.8;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ===================== CONCEPT SECTION ===================== */
+    #concept {
+      background: var(--dark);
+      overflow: hidden;
+    }
+
+    .concept-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .concept-visual {
+      position: relative;
+    }
+
+    .concept-circle {
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%,
+        rgba(232,93,42,0.25) 0%,
+        rgba(245,158,11,0.12) 40%,
+        rgba(5,6,8,0.8) 70%);
+      border: 1px solid rgba(232,93,42,0.2);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center; padding: 60px;
+      position: relative;
+      box-shadow:
+        inset 0 0 60px rgba(232,93,42,0.1),
+        0 0 80px rgba(232,93,42,0.08),
+        0 40px 100px rgba(0,0,0,0.6);
+    }
+
+    .concept-circle::before {
+      content: '';
+      position: absolute; inset: -1px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        rgba(232,93,42,0.4) 20%,
+        transparent 40%,
+        rgba(77,184,212,0.3) 60%,
+        transparent 80%,
+        rgba(232,93,42,0.2) 100%
+      );
+      z-index: -1;
+      animation: rotateBorder 8s linear infinite;
+    }
+
+    @keyframes rotateBorder {
+      to { transform: rotate(360deg); }
+    }
+
+    .concept-num {
+      font-family: 'Inter', sans-serif;
+      font-size: 80px; font-weight: 900;
+      letter-spacing: -0.04em;
+      background: var(--grad-fire);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .concept-num-label {
+      font-size: 13px;
+      color: var(--fog);
+      letter-spacing: 0.1em;
+      margin-top: 8px;
+    }
+
+    .concept-ratio-items {
+      display: flex; flex-direction: column; gap: 12px;
+      margin-top: 24px; width: 100%;
+    }
+
+    .ratio-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .ratio-item:last-child { border-bottom: none; }
+
+    .ratio-label { font-size: 12px; color: var(--fog); }
+    .ratio-value {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700; font-size: 14px;
+      color: var(--lava-light);
+    }
+
+    .concept-text { }
+
+    .concept-eyebrow {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--lava); font-family: 'Inter', sans-serif;
+      margin-bottom: 20px; display: block;
+    }
+
+    .concept-heading {
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--pure);
+      margin-bottom: 28px;
+    }
+
+    .concept-heading em {
+      font-style: normal;
+      background: var(--grad-fire);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .concept-body {
+      font-size: 16px;
+      line-height: 2;
+      color: var(--fog);
+      margin-bottom: 32px;
+    }
+
+    .concept-tags {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+
+    .tag {
+      font-size: 12px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--fog);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      transition: border-color 0.25s, color 0.25s;
+    }
+
+    .tag:hover {
+      border-color: var(--lava);
+      color: var(--lava-light);
+    }
+
+    /* ===================== SCIENCE SECTION ===================== */
+    #science {
+      background: var(--black);
+      overflow: hidden;
+    }
+
+    .science-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 64px;
+    }
+
+    .science-card {
+      background: var(--dark2);
+      padding: 48px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s var(--ease-out);
+    }
+
+    .science-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .science-card-fire::before {
+      background: radial-gradient(ellipse at top left, rgba(232,93,42,0.12) 0%, transparent 70%);
+    }
+
+    .science-card-temp::before {
+      background: radial-gradient(ellipse at top, rgba(245,158,11,0.1) 0%, transparent 70%);
+    }
+
+    .science-card-ice::before {
+      background: radial-gradient(ellipse at top right, rgba(77,184,212,0.12) 0%, transparent 70%);
+    }
+
+    .science-card:hover { transform: translateY(-4px); }
+    .science-card:hover::before { opacity: 1; }
+
+    .science-icon {
+      width: 56px; height: 56px;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin-bottom: 28px;
+    }
+
+    .icon-fire { background: rgba(232,93,42,0.15); }
+    .icon-temp { background: rgba(245,158,11,0.15); }
+    .icon-ice  { background: rgba(77,184,212,0.15); }
+
+    .science-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 64px; font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .val-fire { color: var(--lava-light); }
+    .val-temp { color: var(--amber); }
+    .val-ice  { color: var(--aqua); }
+
+    .science-unit {
+      font-size: 20px; font-weight: 400;
+      vertical-align: super;
+      letter-spacing: 0;
+    }
+
+    .science-title {
+      font-size: 18px; font-weight: 700;
+      color: var(--white);
+      margin-bottom: 12px;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    .science-desc {
+      font-size: 14px; line-height: 1.8;
+      color: var(--mist);
+    }
+
+    .science-patent {
+      margin-top: 48px;
+      padding: 28px 36px;
+      background: var(--dark2);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(212,175,55,0.2);
+      display: flex; align-items: center; gap: 24px;
+    }
+
+    .patent-badge {
+      flex-shrink: 0;
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: rgba(212,175,55,0.1);
+      border: 2px solid rgba(212,175,55,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+    }
+
+    .patent-text strong {
+      display: block;
+      font-size: 16px; font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .patent-text p {
+      font-size: 14px;
+      color: var(--mist);
+      line-height: 1.6;
+    }
+
+    /* ===================== EXPERIENCE ===================== */
+    #experience {
+      background: var(--dark);
+    }
+
+    .experience-flow {
+      display: flex; flex-direction: column; gap: 0;
+      max-width: 720px; margin: 0 auto;
+      position: relative;
+    }
+
+    .experience-flow::before {
+      content: '';
+      position: absolute;
+      left: 28px; top: 56px; bottom: 56px;
+      width: 1px;
+      background: linear-gradient(180deg,
+        transparent 0%,
+        var(--lava) 20%,
+        var(--amber) 50%,
+        var(--aqua) 80%,
+        transparent 100%
+      );
+    }
+
+    .exp-step {
+      display: flex; gap: 32px; align-items: flex-start;
+      padding: 32px 0;
+      position: relative;
+    }
+
+    .exp-step-num {
+      flex-shrink: 0;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Inter', sans-serif;
+      font-weight: 900; font-size: 18px;
+      position: relative; z-index: 1;
+    }
+
+    .step-fire {
+      background: rgba(232,93,42,0.15);
+      border: 2px solid var(--lava);
+      color: var(--lava-light);
+      box-shadow: 0 0 20px rgba(232,93,42,0.3);
+    }
+
+    .step-amber {
+      background: rgba(245,158,11,0.15);
+      border: 2px solid var(--amber);
+      color: var(--amber);
+      box-shadow: 0 0 20px rgba(245,158,11,0.3);
+    }
+
+    .step-ice {
+      background: rgba(77,184,212,0.15);
+      border: 2px solid var(--aqua);
+      color: var(--aqua);
+      box-shadow: 0 0 20px rgba(77,184,212,0.3);
+    }
+
+    .exp-step-content { padding-top: 8px; }
+
+    .exp-step-title {
+      font-size: 22px; font-weight: 700;
+      color: var(--pure); margin-bottom: 10px;
+    }
+
+    .exp-step-desc {
+      font-size: 15px; line-height: 1.9;
+      color: var(--fog);
+    }
+
+    .exp-badge {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border-radius: 100px;
+      background: rgba(77,184,212,0.1);
+      color: var(--aqua);
+      border: 1px solid rgba(77,184,212,0.25);
+    }
+
+    /* ===================== WATER SECTION ===================== */
+    #water {
+      background: var(--black);
+      overflow: hidden;
+    }
+
+    .water-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .water-text { order: 2; }
+    .water-visual { order: 1; }
+
+    .water-bubble {
+      width: 100%; max-width: 420px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%,
+        rgba(77,184,212,0.3) 0%,
+        rgba(15,113,115,0.2) 40%,
+        rgba(5,6,8,0.9) 70%
+      );
+      border: 1px solid rgba(77,184,212,0.15);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 60px;
+      position: relative;
+      box-shadow:
+        inset 0 0 60px rgba(77,184,212,0.08),
+        0 0 80px rgba(77,184,212,0.05),
+        0 40px 100px rgba(0,0,0,0.5);
+      animation: waterPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes waterPulse {
+      0%, 100% { transform: scale(1); box-shadow: inset 0 0 60px rgba(77,184,212,0.08), 0 0 80px rgba(77,184,212,0.05), 0 40px 100px rgba(0,0,0,0.5); }
+      50% { transform: scale(1.02); box-shadow: inset 0 0 80px rgba(77,184,212,0.12), 0 0 120px rgba(77,184,212,0.08), 0 40px 100px rgba(0,0,0,0.5); }
+    }
+
+    .water-temp {
+      font-family: 'Inter', sans-serif;
+      font-size: 72px; font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--aqua);
+      line-height: 1;
+      text-shadow: 0 0 40px rgba(77,184,212,0.5);
+    }
+
+    .water-temp-label {
+      font-size: 14px; color: var(--aqua-deep);
+      letter-spacing: 0.1em; margin-top: 8px;
+    }
+
+    .water-minerals {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-top: 20px;
+    }
+
+    .mineral-tag {
+      font-size: 10px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: rgba(77,184,212,0.08);
+      border: 1px solid rgba(77,184,212,0.2);
+      color: var(--aqua);
+      font-weight: 500;
+    }
+
+    .water-heading {
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 900; line-height: 1.15;
+      color: var(--pure); margin-bottom: 24px;
+    }
+
+    .water-heading em {
+      font-style: normal;
+      color: var(--aqua);
+      text-shadow: 0 0 30px rgba(77,184,212,0.4);
+    }
+
+    .water-body {
+      font-size: 16px; line-height: 2;
+      color: var(--fog); margin-bottom: 32px;
+    }
+
+    .water-features {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    .water-feature {
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+
+    .water-feature-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: var(--radius-sm);
+      background: rgba(77,184,212,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .water-feature-text strong {
+      display: block; font-size: 14px;
+      font-weight: 600; color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .water-feature-text span {
+      font-size: 13px; color: var(--mist);
+      line-height: 1.6;
+    }
+
+    /* ===================== LOCATIONS ===================== */
+    #locations {
+      background: var(--dark);
+    }
+
+    .locations-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .location-card {
+      background: var(--dark2);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: transform 0.4s var(--ease-out), border-color 0.4s, box-shadow 0.4s;
+      position: relative;
+    }
+
+    .location-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(232,93,42,0.25);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4), 0 0 40px rgba(232,93,42,0.08);
+    }
+
+    .location-card-top {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .location-bg-akasaka {
+      background: radial-gradient(ellipse at 50% 30%,
+        rgba(232,93,42,0.35) 0%, rgba(5,6,8,0.9) 70%
+      );
+    }
+
+    .location-bg-azabu {
+      background: radial-gradient(ellipse at 50% 30%,
+        rgba(212,175,55,0.3) 0%, rgba(5,6,8,0.9) 70%
+      );
+    }
+
+    .location-bg-sapporo {
+      background: radial-gradient(ellipse at 50% 30%,
+        rgba(77,184,212,0.3) 0%, rgba(5,6,8,0.9) 70%
+      );
+    }
+
+    .location-emoji { font-size: 56px; }
+
+    .location-badge {
+      position: absolute; top: 16px; right: 16px;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 100px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .badge-men {
+      background: rgba(232,93,42,0.2);
+      border: 1px solid rgba(232,93,42,0.4);
+      color: var(--lava-light);
+    }
+
+    .badge-women {
+      background: rgba(212,175,55,0.15);
+      border: 1px solid rgba(212,175,55,0.35);
+      color: var(--gold);
+    }
+
+    .badge-mixed {
+      background: rgba(77,184,212,0.15);
+      border: 1px solid rgba(77,184,212,0.35);
+      color: var(--aqua);
+    }
+
+    .location-body { padding: 28px; }
+
+    .location-name {
+      font-size: 22px; font-weight: 700;
+      color: var(--pure); margin-bottom: 6px;
+    }
+
+    .location-sub {
+      font-size: 13px; color: var(--mist);
+      margin-bottom: 20px;
+    }
+
+    .location-info {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .location-info-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 13px; line-height: 1.5;
+    }
+
+    .location-info-item .info-icon {
+      font-size: 14px; flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .location-info-item span { color: var(--fog); }
+
+    .location-price {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .price-label {
+      font-size: 11px;
+      color: var(--mist);
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .price-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 28px; font-weight: 900;
+      color: var(--lava-light);
+      letter-spacing: -0.02em;
+    }
+
+    .price-value span {
+      font-size: 14px; font-weight: 400;
+      color: var(--mist); margin-left: 4px;
+    }
+
+    /* ===================== PRICING ===================== */
+    #pricing {
+      background: var(--black);
+    }
+
+    .pricing-tabs {
+      display: flex; gap: 0;
+      background: var(--dark2);
+      border-radius: 100px;
+      padding: 4px;
+      width: fit-content;
+      margin: 0 auto 56px;
+    }
+
+    .pricing-tab {
+      padding: 10px 28px;
+      border-radius: 100px;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none;
+      background: transparent;
+      color: var(--mist);
+      transition: all 0.25s;
+      letter-spacing: 0.05em;
+    }
+
+    .pricing-tab.active {
+      background: var(--grad-fire);
+      color: var(--pure);
+      box-shadow: 0 4px 16px rgba(232,93,42,0.35);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--dark2);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: transform 0.4s var(--ease-out), border-color 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card.featured {
+      border-color: rgba(232,93,42,0.3);
+      background: linear-gradient(160deg, rgba(232,93,42,0.06) 0%, var(--dark2) 60%);
+    }
+
+    .pricing-card.featured::before {
+      content: 'おすすめ';
+      position: absolute; top: 20px; right: 20px;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 4px 12px; border-radius: 100px;
+      background: var(--grad-fire);
+      color: var(--pure);
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .pricing-duration {
+      font-family: 'Inter', sans-serif;
+      font-size: 48px; font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--pure);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .pricing-duration-unit {
+      font-size: 18px; font-weight: 400;
+    }
+
+    .pricing-plan-name {
+      font-size: 12px; color: var(--mist);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 24px;
+    }
+
+    .pricing-divider {
+      width: 100%; height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin-bottom: 24px;
+    }
+
+    .pricing-items {
+      display: flex; flex-direction: column; gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .pricing-item {
+      display: flex; justify-content: space-between;
+      align-items: center; font-size: 14px;
+    }
+
+    .pricing-item-label { color: var(--fog); }
+
+    .pricing-item-price {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700; font-size: 16px;
+    }
+
+    .price-general { color: var(--white); }
+    .price-member { color: var(--lava-light); }
+
+    .pricing-note {
+      font-size: 12px; color: var(--ash);
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    /* ===================== CTA ===================== */
+    #cta {
+      background: var(--dark);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    .cta-orbs {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+
+    .cta-orb-1 {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,93,42,0.12) 0%, transparent 70%);
+      top: -100px; left: -100px;
+      filter: blur(60px);
+    }
+
+    .cta-orb-2 {
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(77,184,212,0.08) 0%, transparent 70%);
+      bottom: -100px; right: -100px;
+      filter: blur(60px);
+    }
+
+    .cta-content { position: relative; z-index: 2; }
+
+    .cta-title {
+      font-size: clamp(36px, 5vw, 72px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--pure);
+      margin-bottom: 20px;
+    }
+
+    .cta-title .fire {
+      background: var(--grad-fire);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cta-sub {
+      font-size: 18px; color: var(--fog);
+      font-weight: 300; line-height: 1.7;
+      max-width: 480px; margin: 0 auto 48px;
+    }
+
+    .cta-actions {
+      display: flex; gap: 16px;
+      justify-content: center; flex-wrap: wrap;
+    }
+
+    .cta-app-badges {
+      display: flex; gap: 12px; justify-content: center;
+      margin-top: 24px; flex-wrap: wrap;
+    }
+
+    .app-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 13px; font-weight: 500;
+      transition: background 0.25s, border-color 0.25s;
+    }
+
+    .app-badge:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      background: var(--black);
+      padding: 60px 24px 40px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand { }
+
+    .footer-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 22px; font-weight: 900;
+      color: var(--pure);
+      margin-bottom: 16px; display: block;
+    }
+
+    .footer-tagline {
+      font-size: 14px; color: var(--mist);
+      line-height: 1.8; margin-bottom: 24px;
+    }
+
+    .footer-socials {
+      display: flex; gap: 12px;
+    }
+
+    .social-btn {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--dark3);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      text-decoration: none;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+    }
+
+    .social-btn:hover {
+      background: rgba(232,93,42,0.1);
+      border-color: rgba(232,93,42,0.3);
+      transform: translateY(-2px);
+    }
+
+    .footer-col-title {
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--mist); font-family: 'Inter', sans-serif;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      display: flex; flex-direction: column; gap: 12px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 14px; color: var(--ash);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      flex-wrap: wrap; gap: 12px;
+    }
+
+    .footer-copy {
+      font-size: 12px; color: var(--ash);
+    }
+
+    .footer-bottom-links {
+      display: flex; gap: 24px;
+    }
+
+    .footer-bottom-links a {
+      font-size: 12px; color: var(--ash);
+      text-decoration: none; transition: color 0.25s;
+    }
+
+    .footer-bottom-links a:hover { color: var(--fog); }
+
+    /* ===================== SCROLL ANIMATIONS ===================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ===================== COUNTER ANIMATION ===================== */
+    .count-up { display: inline-block; }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 1024px) {
+      .concept-inner,
+      .water-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .concept-circle { width: 320px; height: 320px; }
+      .concept-circle { margin: 0 auto; }
+
+      .water-visual { order: 1; display: flex; justify-content: center; }
+      .water-text { order: 2; }
+
+      .science-grid { grid-template-columns: 1fr; }
+
+      .locations-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      section { padding: 80px 20px; }
+
+      .hero-stats { gap: 24px; }
+      .hero-divider { display: none; }
+
+      .locations-grid { grid-template-columns: 1fr; }
+
+      .pricing-grid { grid-template-columns: 1fr; }
+
+      .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ===================== CUSTOM SCROLLBAR ===================== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb {
+      background: var(--ash);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--lava); }
+
+    /* ===================== SELECTION ===================== */
+    ::selection {
+      background: rgba(232,93,42,0.3);
+      color: var(--pure);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">
+      <span></span>
+      スゴイサウナ
+    </a>
+    <ul class="nav-links">
+      <li><a href="#concept">コンセプト</a></li>
+      <li><a href="#science">技術</a></li>
+      <li><a href="#experience">体験</a></li>
+      <li><a href="#locations">店舗</a></li>
+      <li><a href="#pricing">料金</a></li>
+      <li><a href="#cta" class="nav-cta">今すぐ予約</a></li>
+    </ul>
+    <div class="nav-hamburger" id="hamburger" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        日本初 · パブリック型マグマスパ式サウナ
+      </div>
+
+      <h1 class="hero-title">
+        <span class="fire-text">富士山で、</span>
+        治まる。
+      </h1>
+
+      <p class="hero-kanji">
+        「ととのう」を超えた、新次元の体感へ
+      </p>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num count-up" data-target="65">0</span>
+          <span style="color:var(--lava);font-family:'Inter';font-size:18px;font-weight:900;">°C</span>
+          <div class="hero-stat-label">室内温度</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-num count-up" data-target="60">0</span>
+          <span style="color:var(--lava);font-family:'Inter';font-size:18px;font-weight:900;">%</span>
+          <div class="hero-stat-label">湿度</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-num count-up" data-target="3">0</span>
+          <div class="hero-stat-label">世界特許取得国</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" style="font-family:'Inter';font-size:36px;font-weight:900;background:var(--grad-fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">2,000</span>
+          <span style="color:var(--lava);font-family:'Inter';font-size:14px;font-weight:700;">円〜</span>
+          <div class="hero-stat-label">アプリ会員 60分</div>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#cta" class="btn-primary">
+          🔥 今すぐ体験予約
+        </a>
+        <a href="#concept" class="btn-secondary">
+          コンセプトを見る →
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      scroll
+    </div>
+  </section>
+
+  <!-- CONCEPT -->
+  <section id="concept">
+    <div class="container">
+      <div class="concept-inner">
+        <div class="concept-visual reveal">
+          <div class="concept-circle">
+            <div class="concept-num">黄金比</div>
+            <div class="concept-num-label">GOLDEN RATIO OF SAUNA</div>
+            <div class="concept-ratio-items">
+              <div class="ratio-item">
+                <span class="ratio-label">🔥 室内温度</span>
+                <span class="ratio-value">65°C</span>
+              </div>
+              <div class="ratio-item">
+                <span class="ratio-label">💧 湿度</span>
+                <span class="ratio-value">60%</span>
+              </div>
+              <div class="ratio-item">
+                <span class="ratio-label">☀️ 育成光線</span>
+                <span class="ratio-value">60°C</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-text">
+          <span class="concept-eyebrow reveal">CONCEPT</span>
+          <h2 class="concept-heading reveal reveal-delay-1">
+            「ととのう」の<br>
+            その先へ、<em>治まる</em>。
+          </h2>
+          <p class="concept-body reveal reveal-delay-2">
+            古くから日本に伝わる湯治の文化を現代に甦らせた、
+            次世代の温浴体験。富士山の溶岩石が生み出す
+            輻射熱が、身体の深部まで優しく浸透し、
+            自然治癒力を呼び覚ます。
+          </p>
+          <p class="concept-body reveal reveal-delay-2">
+            「熱い」だけでなく、「芯から溶ける」感覚。
+            数分で汗が溢れ出し、日常の疲れや緊張が
+            ほぐれていく、まったく新しいサウナ体験。
+          </p>
+          <div class="concept-tags reveal reveal-delay-3">
+            <span class="tag">自然治癒力</span>
+            <span class="tag">マグマスパ</span>
+            <span class="tag">輻射熱</span>
+            <span class="tag">美容効果</span>
+            <span class="tag">予防医療</span>
+            <span class="tag">湯治文化</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCIENCE -->
+  <section id="science">
+    <div class="container">
+      <div class="section-header">
+        <span class="label reveal">THE SCIENCE</span>
+        <h2 class="section-title reveal reveal-delay-1">富士山の溶岩が生む<br>サウナの科学</h2>
+        <p class="section-sub reveal reveal-delay-2">
+          世界3ヶ国で特許を取得したマグマスパ技術。
+          従来のサウナの限界を超えた、新しい温浴体験の仕組みを解説。
+        </p>
+      </div>
+
+      <div class="science-grid">
+        <div class="science-card science-card-fire reveal">
+          <div class="science-icon icon-fire">🌋</div>
+          <div class="science-value val-fire">65<span class="science-unit">°C</span></div>
+          <div class="science-title">輻射熱サウナ室</div>
+          <p class="science-desc">
+            富士山の溶岩石が水蒸気で熱せられ、輻射熱として放射。
+            従来の対流熱と異なり、より少ないエネルギーで
+            身体の深部まで効率よく温めます。
+          </p>
+        </div>
+
+        <div class="science-card science-card-temp reveal reveal-delay-1">
+          <div class="science-icon icon-temp">💧</div>
+          <div class="science-value val-temp">60<span class="science-unit">%</span></div>
+          <div class="science-title">最適湿度コントロール</div>
+          <p class="science-desc">
+            湿度60%という黄金比が、皮膚表面の汗蒸発を
+            適切にコントロール。乾燥によるダメージなしに、
+            驚くほどの発汗と深部加温を実現します。
+          </p>
+        </div>
+
+        <div class="science-card science-card-ice reveal reveal-delay-2">
+          <div class="science-icon icon-ice">✨</div>
+          <div class="science-value val-ice">60<span class="science-unit">°C</span></div>
+          <div class="science-title">育成光線遠赤外線</div>
+          <p class="science-desc">
+            育成光線（遠赤外線）が皮膚の奥深くに届き、
+            細胞レベルで温める効果を発揮。
+            代謝促進・免疫活性・美容効果が期待できます。
+          </p>
+        </div>
+      </div>
+
+      <div class="science-patent reveal">
+        <div class="patent-badge">🏆</div>
+        <div class="patent-text">
+          <strong>世界3ヶ国特許取得済 · Patent Registered in 3 Countries</strong>
+          <p>スゴイサウナのマグマスパ技術は、日本・韓国・アメリカにて特許を取得。
+          誰も真似できない、本物の技術で作られたサウナ体験です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE FLOW -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-header">
+        <span class="label reveal">EXPERIENCE FLOW</span>
+        <h2 class="section-title reveal reveal-delay-1">一度入れば、虜になる。</h2>
+        <p class="section-sub reveal reveal-delay-2">
+          スゴイサウナが設計した、最高の体験フロー。
+        </p>
+      </div>
+
+      <div class="experience-flow">
+        <div class="exp-step reveal">
+          <div class="exp-step-num step-fire">01</div>
+          <div class="exp-step-content">
+            <h3 class="exp-step-title">🔥 マグマスパ入室</h3>
+            <p class="exp-step-desc">
+              65°Cの溶岩サウナへ。入室してわずか数分で、
+              全身から汗が溢れ出す驚きの体験。
+              従来のサウナとは比べ物にならない深部加温が始まります。
+            </p>
+          </div>
+        </div>
+
+        <div class="exp-step reveal reveal-delay-1">
+          <div class="exp-step-num step-amber">02</div>
+          <div class="exp-step-content">
+            <h3 class="exp-step-title">⏱ 推奨10〜15分滞在</h3>
+            <p class="exp-step-desc">
+              輻射熱がじっくりと身体の奥まで届く。
+              息苦しさなく、気持ちよく汗をかき続けられます。
+              身体の声に耳を傾け、自分のペースで。
+            </p>
+          </div>
+        </div>
+
+        <div class="exp-step reveal reveal-delay-2">
+          <div class="exp-step-num step-ice">03</div>
+          <div class="exp-step-content">
+            <h3 class="exp-step-title">💧 富士山伏流水の水風呂</h3>
+            <p class="exp-step-desc">
+              麦飯石・水晶・トルマリンなど数十種の天然鉱石でろ過した、
+              富士山の伏流水を再現した水風呂へ。
+              ミネラル豊富な柔らかい水が、全身を包み込みます。
+            </p>
+            <span class="exp-badge">天然ミネラルウォーター</span>
+          </div>
+        </div>
+
+        <div class="exp-step reveal reveal-delay-3">
+          <div class="exp-step-num step-amber">04</div>
+          <div class="exp-step-content">
+            <h3 class="exp-step-title">🌿 外気浴・休憩</h3>
+            <p class="exp-step-desc">
+              身体と心が完全に「治まる」瞬間。
+              「ととのう」を超えた深い静寂と、
+              細胞が生き返るような感覚を味わってください。
+            </p>
+          </div>
+        </div>
+
+        <div class="exp-step reveal reveal-delay-4">
+          <div class="exp-step-num step-fire">∞</div>
+          <div class="exp-step-content">
+            <h3 class="exp-step-title">🔄 繰り返す、至福</h3>
+            <p class="exp-step-desc">
+              このサイクルを2〜3セット。
+              訪れるたびに新しい「治まる」体験が待っています。
+              常連になれば、あなただけの最適なサイクルが見つかります。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WATER -->
+  <section id="water">
+    <div class="container">
+      <div class="water-inner">
+        <div class="water-visual reveal">
+          <div class="water-bubble">
+            <div class="water-temp">16°C</div>
+            <div class="water-temp-label">富士山伏流水 水風呂</div>
+            <div class="water-minerals">
+              <span class="mineral-tag">麦飯石</span>
+              <span class="mineral-tag">水晶</span>
+              <span class="mineral-tag">トルマリン</span>
+              <span class="mineral-tag">木炭</span>
+              <span class="mineral-tag">セラミック</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="water-text">
+          <span class="label label-ice reveal">MINERAL WATER BATH</span>
+          <h2 class="water-heading reveal reveal-delay-1">
+            ただの水じゃない。<br>
+            <em>富士山の恵み</em>を、そのままに。
+          </h2>
+          <p class="water-body reveal reveal-delay-2">
+            人工的に富士山の伏流水を再現した水風呂。
+            数十種類の天然鉱石層を通して生まれた
+            天然ミネラルを豊富に含む、まろやかな水が
+            汗をかいた肌を優しく包み込みます。
+          </p>
+
+          <div class="water-features reveal reveal-delay-3">
+            <div class="water-feature">
+              <div class="water-feature-icon">🪨</div>
+              <div class="water-feature-text">
+                <strong>天然鉱石フィルター</strong>
+                <span>麦飯石・水晶・トルマリン・木炭・セラミックなど、数十種の天然鉱石でろ過</span>
+              </div>
+            </div>
+            <div class="water-feature">
+              <div class="water-feature-icon">💎</div>
+              <div class="water-feature-text">
+                <strong>ミネラル豊富な軟水</strong>
+                <span>肌に優しく、保湿効果が高い天然ミネラルウォーターを再現</span>
+              </div>
+            </div>
+            <div class="water-feature">
+              <div class="water-feature-icon">❄️</div>
+              <div class="water-feature-text">
+                <strong>最適水温管理</strong>
+                <span>交感神経を刺激する最適温度を一定に保ち、最高の引き締め効果を発揮</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section id="locations">
+    <div class="container">
+      <div class="section-header">
+        <span class="label reveal">LOCATIONS</span>
+        <h2 class="section-title reveal reveal-delay-1">あなたの街に、スゴイサウナ。</h2>
+        <p class="section-sub reveal reveal-delay-2">
+          東京・赤坂、東麻布、そして北海道・札幌すすきの。
+          都市に溶け込む、新しいサウナの形。
+        </p>
+      </div>
+
+      <div class="locations-grid">
+        <!-- 赤坂 -->
+        <div class="location-card reveal">
+          <div class="location-card-top location-bg-akasaka">
+            <div class="location-emoji">🔥</div>
+            <span class="location-badge badge-men">男性専用</span>
+          </div>
+          <div class="location-body">
+            <div class="location-name">赤坂店</div>
+            <div class="location-sub">Tokyo · Akasaka</div>
+            <div class="location-info">
+              <div class="location-info-item">
+                <span class="info-icon">📍</span>
+                <span>東京都港区赤坂4-2-12<br>エスセナーリオ赤坂WEST111</span>
+              </div>
+              <div class="location-info-item">
+                <span class="info-icon">🚇</span>
+                <span>東京メトロ「赤坂見附」駅 徒歩約4分</span>
+              </div>
+              <div class="location-info-item">
+                <span class="info-icon">🕐</span>
+                <span>平日・土日・祝日 営業</span>
+              </div>
+            </div>
+            <div class="location-price">
+              <div class="price-label">アプリ会員 60分</div>
+              <div class="price-value">¥2,000<span>〜</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 東麻布 -->
+        <div class="location-card reveal reveal-delay-1">
+          <div class="location-card-top location-bg-azabu">
+            <div class="location-emoji">✨</div>
+            <span class="location-badge badge-women">女性専用</span>
+          </div>
+          <div class="location-body">
+            <div class="location-name">東麻布店</div>
+            <div class="location-sub">Tokyo · Higashi-Azabu</div>
+            <div class="location-info">
+              <div class="location-info-item">
+                <span class="info-icon">📍</span>
+                <span>東京都港区東麻布<br>（麻布十番駅前）</span>
+              </div>
+              <div class="location-info-item">
+                <span class="info-icon">🚇</span>
+                <span>都営大江戸線「麻布十番」駅 徒歩1分</span>
+              </div>
+              <div class="location-info-item">
+                <span class="info-icon">🏨</span>
+                <span>ステイプランあり（宿泊可能）</span>
+              </div>
+            </div>
+            <div class="location-price">
+              <div class="price-label">アプリ会員 60分</div>
+              <div class="price-value">¥2,000<span>〜</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 札幌 -->
+        <div class="location-card reveal reveal-delay-2">
+          <div class="location-card-top location-bg-sapporo">
+            <div class="location-emoji">🏔️</div>
+            <span class="location-badge badge-mixed">男女共浴</span>
+          </div>
+          <div class="location-body">
+            <div class="location-name">札幌すすきの店</div>
+            <div class="location-sub">Sapporo · Susukino</div>
+            <div class="location-info">
+              <div class="location-info-item">
+                <span class="info-icon">📍</span>
+                <span>北海道札幌市中央区南5条西2-1-14<br>オークラビル地下1階</span>
+              </div>
+              <div class="location-info-item">
+                <span class="info-icon">🚇</span>
+                <span>地下鉄「すすきの」駅 徒歩4分</span>
+              </div>
+              <div class="location-info-item">
+                <span class="info-icon">🕐</span>
+                <span>10:00〜翌6:00（24H近く営業）</span>
+              </div>
+            </div>
+            <div class="location-price">
+              <div class="price-label">サウナ会員 60分</div>
+              <div class="price-value">¥1,408<span>〜</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <span class="label reveal">PRICING</span>
+        <h2 class="section-title reveal reveal-delay-1">シンプルな料金体系</h2>
+        <p class="section-sub reveal reveal-delay-2">
+          アプリ会員登録で、もっとお得に。タオルセット付きで手ぶらOK。
+        </p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="pricing-card reveal">
+          <div class="pricing-duration">60<span class="pricing-duration-unit">分</span></div>
+          <div class="pricing-plan-name">SHORT STAY</div>
+          <div class="pricing-divider"></div>
+          <div class="pricing-items">
+            <div class="pricing-item">
+              <span class="pricing-item-label">一般料金</span>
+              <span class="pricing-item-price price-general">¥3,500</span>
+            </div>
+            <div class="pricing-item">
+              <span class="pricing-item-label">アプリ会員</span>
+              <span class="pricing-item-price price-member">¥2,000</span>
+            </div>
+          </div>
+          <a href="#cta" class="btn-secondary" style="width:100%;justify-content:center;font-size:14px;padding:12px;">
+            このプランで予約
+          </a>
+        </div>
+
+        <div class="pricing-card featured reveal reveal-delay-1">
+          <div class="pricing-duration">90<span class="pricing-duration-unit">分</span></div>
+          <div class="pricing-plan-name">STANDARD</div>
+          <div class="pricing-divider"></div>
+          <div class="pricing-items">
+            <div class="pricing-item">
+              <span class="pricing-item-label">一般料金</span>
+              <span class="pricing-item-price price-general">¥4,250</span>
+            </div>
+            <div class="pricing-item">
+              <span class="pricing-item-label">アプリ会員</span>
+              <span class="pricing-item-price price-member">¥2,500</span>
+            </div>
+          </div>
+          <a href="#cta" class="btn-primary" style="width:100%;justify-content:center;font-size:14px;padding:12px;">
+            このプランで予約
+          </a>
+        </div>
+
+        <div class="pricing-card reveal reveal-delay-2">
+          <div class="pricing-duration">120<span class="pricing-duration-unit">分</span></div>
+          <div class="pricing-plan-name">PREMIUM</div>
+          <div class="pricing-divider"></div>
+          <div class="pricing-items">
+            <div class="pricing-item">
+              <span class="pricing-item-label">一般料金</span>
+              <span class="pricing-item-price price-general">¥5,000</span>
+            </div>
+            <div class="pricing-item">
+              <span class="pricing-item-label">アプリ会員</span>
+              <span class="pricing-item-price price-member">¥3,250</span>
+            </div>
+          </div>
+          <a href="#cta" class="btn-secondary" style="width:100%;justify-content:center;font-size:14px;padding:12px;">
+            このプランで予約
+          </a>
+        </div>
+      </div>
+
+      <div class="pricing-note reveal">
+        ※ タオル（大・小セット）1セット付き ／ ドリンクバー ¥500 ／ 延長 10分ごとに ¥250<br>
+        ※ 料金は赤坂店の価格です。店舗により異なる場合があります。
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="cta-orbs">
+      <div class="cta-orb-1"></div>
+      <div class="cta-orb-2"></div>
+    </div>
+    <div class="container cta-content">
+      <span class="label reveal" style="display:block;text-align:center;margin-bottom:24px;">GET STARTED</span>
+      <h2 class="cta-title reveal reveal-delay-1">
+        今日、<span class="fire">治まりに</span>来い。
+      </h2>
+      <p class="cta-sub reveal reveal-delay-2">
+        アプリ会員登録で初回からお得に体験。
+        手ぶらでOK。あとは身体を委ねるだけ。
+      </p>
+
+      <div class="cta-actions reveal reveal-delay-3">
+        <a href="https://www.sugoisauna.jp" class="btn-primary" style="font-size:17px;padding:18px:44px;">
+          🔥 &nbsp;WEB予約はこちら
+        </a>
+        <a href="https://www.sugoisauna.jp" class="btn-secondary" style="font-size:17px;">
+          会員登録（無料）
+        </a>
+      </div>
+
+      <div class="cta-app-badges reveal reveal-delay-4">
+        <a href="https://www.sugoisauna.jp" class="app-badge">
+          🍎 &nbsp;App Store
+        </a>
+        <a href="https://www.sugoisauna.jp" class="app-badge">
+          🤖 &nbsp;Google Play
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">スゴイサウナ</span>
+        <p class="footer-tagline">
+          富士山の溶岩が生む、日本初のパブリック型マグマスパ式サウナ。<br>
+          「ととのう」を超えた「治まる」体験へ。
+        </p>
+        <div class="footer-socials">
+          <a href="https://www.sugoisauna.jp" class="social-btn" title="Instagram">📷</a>
+          <a href="https://www.sugoisauna.jp" class="social-btn" title="X (Twitter)">𝕏</a>
+          <a href="https://www.sugoisauna.jp" class="social-btn" title="LINE">💬</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">施設</div>
+        <ul class="footer-links">
+          <li><a href="#concept">コンセプト</a></li>
+          <li><a href="#science">マグマスパ技術</a></li>
+          <li><a href="#experience">体験フロー</a></li>
+          <li><a href="#water">水風呂</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">店舗</div>
+        <ul class="footer-links">
+          <li><a href="#locations">赤坂店（男性専用）</a></li>
+          <li><a href="#locations">東麻布店（女性専用）</a></li>
+          <li><a href="#locations">札幌すすきの店</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">サービス</div>
+        <ul class="footer-links">
+          <li><a href="#pricing">料金・プラン</a></li>
+          <li><a href="#cta">アプリ会員登録</a></li>
+          <li><a href="https://www.sugoisauna.jp">よくある質問</a></li>
+          <li><a href="https://www.sugoisauna.jp">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2024 スゴイサウナ All Rights Reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="https://www.sugoisauna.jp">プライバシーポリシー</a>
+        <a href="https://www.sugoisauna.jp">利用規約</a>
+        <a href="https://www.sugoisauna.jp">特定商取引法</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===================== NAV SCROLL =====================
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // ===================== HAMBURGER =====================
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLinks.style.display === 'flex';
+      navLinks.style.display = isOpen ? 'none' : 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'fixed';
+      navLinks.style.top = '72px';
+      navLinks.style.left = '0'; navLinks.style.right = '0';
+      navLinks.style.background = 'rgba(5,6,8,0.97)';
+      navLinks.style.backdropFilter = 'blur(20px)';
+      navLinks.style.padding = '24px';
+      navLinks.style.gap = '20px';
+      navLinks.style.zIndex = '800';
+    });
+
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        if (window.innerWidth < 768) navLinks.style.display = 'none';
+      });
+    });
+
+    // ===================== INTERSECTION OBSERVER =====================
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    // ===================== COUNT UP =====================
+    function animateCount(el) {
+      const target = parseInt(el.dataset.target, 10);
+      const duration = 1800;
+      const start = performance.now();
+
+      function update(time) {
+        const progress = Math.min((time - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        el.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    const countEls = document.querySelectorAll('.count-up');
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          countObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    countEls.forEach(el => countObserver.observe(el));
+
+    // ===================== SMOOTH ANCHOR =====================
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ===================== PARALLAX HERO ORBS =====================
+    const orbs = document.querySelectorAll('.hero-orb');
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          orbs[0].style.transform = `translate(${y * 0.05}px, ${y * 0.1}px)`;
+          orbs[1].style.transform = `translate(${-y * 0.04}px, ${y * 0.08}px)`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  </script>
+</body>
+</html>
