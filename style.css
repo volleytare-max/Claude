@@ -1,0 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #1a1a2e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Courier New', monospace;
+  color: #e0e0e0;
+}
+
+#app {
+  position: relative;
+}
+
+#game-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+#board {
+  border: 2px solid #4a4a8a;
+  background: #0d0d1a;
+  display: block;
+  box-shadow: 0 0 20px rgba(100, 100, 255, 0.3);
+}
+
+#side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 140px;
+}
+
+.panel-section {
+  background: #16213e;
+  border: 1px solid #4a4a8a;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.panel-section h3 {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #8888cc;
+  margin-bottom: 6px;
+}
+
+#score, #level, #lines {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+}
+
+#next-canvas {
+  display: block;
+  background: #0d0d1a;
+  border: 1px solid #2a2a5a;
+}
+
+.controls p {
+  font-size: 11px;
+  color: #aaaacc;
+  margin: 2px 0;
+}
+
+#start-btn {
+  background: #4a4aaa;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.2s;
+}
+
+#start-btn:hover {
+  background: #6666cc;
+}
+
+#overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#overlay.hidden {
+  display: none;
+}
+
+#overlay-content {
+  background: #16213e;
+  border: 2px solid #4a4a8a;
+  border-radius: 8px;
+  padding: 30px 40px;
+  text-align: center;
+}
+
+#overlay-title {
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: #ccccff;
+}
+
+#overlay-score {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #aaaacc;
+}
+
+#overlay-btn {
+  background: #4a4aaa;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 24px;
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.2s;
+}
+
+#overlay-btn:hover {
+  background: #6666cc;
+}

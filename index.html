@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テトリス</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="game-container">
+      <canvas id="board" width="300" height="600"></canvas>
+      <div id="side-panel">
+        <div class="panel-section">
+          <h3>NEXT</h3>
+          <canvas id="next-canvas" width="120" height="120"></canvas>
+        </div>
+        <div class="panel-section">
+          <h3>SCORE</h3>
+          <div id="score">0</div>
+        </div>
+        <div class="panel-section">
+          <h3>LEVEL</h3>
+          <div id="level">1</div>
+        </div>
+        <div class="panel-section">
+          <h3>LINES</h3>
+          <div id="lines">0</div>
+        </div>
+        <div class="panel-section controls">
+          <h3>操作</h3>
+          <p>← → 移動</p>
+          <p>↑ 回転</p>
+          <p>↓ 落下</p>
+          <p>Space ハード落下</p>
+          <p>P 一時停止</p>
+        </div>
+        <button id="start-btn">スタート</button>
+      </div>
+    </div>
+    <div id="overlay" class="hidden">
+      <div id="overlay-content">
+        <h2 id="overlay-title"></h2>
+        <p id="overlay-score"></p>
+        <button id="overlay-btn">もう一度</button>
+      </div>
+    </div>
+  </div>
+  <script src="tetris.js"></script>
+</body>
+</html>
